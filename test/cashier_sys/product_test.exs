@@ -15,7 +15,6 @@ defmodule CashierSys.ProductTest do
     assert "CF1" in product_codes
   end
 
-
   test "get product by code" do
     product = Product.get_product("GR1")
     assert product != nil
@@ -34,10 +33,5 @@ defmodule CashierSys.ProductTest do
     assert product.code == "CF1"
     assert product.name == "Coffee"
     assert product.price == 11.23
-
   end
-
-
-
-
 end

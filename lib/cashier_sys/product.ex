@@ -12,5 +12,4 @@ defmodule CashierSys.Product do
   def get_product(code) do
     Enum.find(list_products(), fn product -> product.code == code end)
   end
-
 end
