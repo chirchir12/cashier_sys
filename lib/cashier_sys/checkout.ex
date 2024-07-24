@@ -1,17 +1,51 @@
 defmodule CashierSys.Checkout do
+  @moduledoc """
+  The `CashierSys.Checkout` module handles the checkout process for the supermarket
+  """
   alias CashierSys.Product
 
   defstruct items: []
 
+  @doc """
+  Returns empty busket
+  Examples
+
+    iex> CashierSys.Checkout.new()
+    %CashierSys.Checkout{items: []}
+  """
+  @spec new() :: %__MODULE__{items: []}
   def new do
     %__MODULE__{}
   end
 
+  @doc """
+    Adds item to a busket and retun the busket
+
+    ## Examples
+
+      iex> busket = CashierSys.Checkout.new()
+      iex> busket = CashierSys.Checkout.add_item(busket, "GR1")
+      %CashierSys.Checkout{items: [%CashierSys.Product{code: "GR1", name: "Green tea", price: 3.11}]}
+  """
+  @spec add_item(%__MODULE__{}, String.t()) :: %__MODULE__{}
   def add_item(%__MODULE__{items: items} = busket, code) do
     product = Product.get_product(code)
     %__MODULE__{busket | items: [product | items]}
   end
 
+  @doc """
+  Calculate total price of all the items in the busket, including discounts
+
+  ## Examples
+
+      iex> busket = CashierSys.Checkout.new()
+      iex> busket = CashierSys.Checkout.add_item(busket, "GR1")
+      iex> CashierSys.Checkout.total(checkout)
+      3.11
+
+  """
+
+  @spec total(%__MODULE__{}) :: float
   def total(%__MODULE__{items: items}) do
     items
     |> Enum.group_by(& &1.code)
@@ -20,8 +54,8 @@ defmodule CashierSys.Checkout do
     |> Float.round(2)
   end
 
-  defp apply_discounts({"CF1", products} ) do
-    price_drop(products, 3, 2/3)
+  defp apply_discounts({"CF1", products}) do
+    price_drop(products, 3, 2 / 3)
   end
 
   defp apply_discounts({"SR1", products}) do
@@ -56,7 +90,8 @@ defmodule CashierSys.Checkout do
     Enum.chunk_every(products, 2)
     |> Enum.map(fn
       [product, _product] -> product.price
-      [product] -> product.price  end)
+      [product] -> product.price
+    end)
     |> Enum.sum()
   end
 
