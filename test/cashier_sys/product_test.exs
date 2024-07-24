@@ -18,11 +18,22 @@ defmodule CashierSys.ProductTest do
 
   test "get product by code" do
     product = Product.get_product("GR1")
-
     assert product != nil
     assert product.code == "GR1"
     assert product.name == "Green tea"
-    assert product.price == Decimal.new("3.11")
+    assert product.price == 3.11
+
+    product = Product.get_product("SR1")
+    assert product != nil
+    assert product.code == "SR1"
+    assert product.name == "Strawberries"
+    assert product.price == 5.00
+
+    product = Product.get_product("CF1")
+    assert product != nil
+    assert product.code == "CF1"
+    assert product.name == "Coffee"
+    assert product.price == 11.23
 
   end
 
